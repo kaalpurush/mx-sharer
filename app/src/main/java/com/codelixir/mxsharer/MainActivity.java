@@ -135,16 +135,16 @@ public class MainActivity extends AppCompatActivity {
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     if (data.hasExtra("end_by") && data.getStringExtra("end_by").equals("playback_completion"))
-                        Toast.makeText(this, R.string.playback_end, Toast.LENGTH_SHORT);
+                        Toast.makeText(this, R.string.playback_end, Toast.LENGTH_SHORT).show();
                     else
-                        Toast.makeText(this, R.string.playback_closed, Toast.LENGTH_SHORT);
+                        Toast.makeText(this, R.string.playback_closed, Toast.LENGTH_SHORT).show();
                     confirmBeforeExit=false;
                     break;
                 case Activity.RESULT_CANCELED:
-                    Toast.makeText(this, R.string.playback_calcelled, Toast.LENGTH_SHORT);
+                    Toast.makeText(this, R.string.playback_calcelled, Toast.LENGTH_SHORT).show();
                     break;
                 case Activity.RESULT_FIRST_USER:
-                    Toast.makeText(this, R.string.playback_error, Toast.LENGTH_SHORT);
+                    Toast.makeText(this, R.string.playback_error, Toast.LENGTH_SHORT).show();
                     break;
             }
         }

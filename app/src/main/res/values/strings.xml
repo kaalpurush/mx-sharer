@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MX Sharer</string>
+    <string name="press_back">Press back again to exit.</string>
+    <string name="playback_end">The End!</string>
+    <string name="playback_closed">Later then?</string>
+    <string name="playback_calcelled">Playback was cancelled!</string>
+    <string name="playback_error">Playback resulted in error!</string>
 </resources>

@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.TextView;
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     long back_pressed = 0;
 
-    boolean confirmBeforeExit=true;
+    boolean confirmBeforeExit = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleIntent(intent);
-    }
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        handleIntent(intent);
+//    }
 
     void handleIntent(Intent intent) {
         String action = intent.getAction();
@@ -106,17 +105,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Uri openMXPlayer(Uri uri) {
-        confirmBeforeExit=true;
+        confirmBeforeExit = true;
         Intent i = new Intent(Intent.ACTION_VIEW);
         Uri videoUri = uri;
         i.setDataAndType(videoUri, "video/*");
         i.setPackage("com.mxtech.videoplayer.pro");
         if (isIntentValid(this, i)) {
-            startActivityForResult(i, 786);
+            startActivityForResult(i, OPEN_PLAYER_REQUEST);
         } else {
             i.setPackage("com.mxtech.videoplayer.ad");
             if (isIntentValid(this, i))
-                startActivityForResult(i, 786);
+                startActivityForResult(i, OPEN_PLAYER_REQUEST);
         }
 
         return uri;
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, R.string.playback_end, Toast.LENGTH_SHORT).show();
                     else
                         Toast.makeText(this, R.string.playback_closed, Toast.LENGTH_SHORT).show();
-                    confirmBeforeExit=false;
+                    confirmBeforeExit = false;
                     break;
                 case Activity.RESULT_CANCELED:
                     Toast.makeText(this, R.string.playback_calcelled, Toast.LENGTH_SHORT).show();

@@ -3,10 +3,13 @@ package com.codelixir.mxsharer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.TextView;
@@ -69,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 uri = handleSendMultipleVideos(intent); // Handle multiple images being sent
             }
         } else {
-            // Handle other intents, such as being started from the home screen
+            String lastUri = getSetting("last_url", "");
+            if (!TextUtils.isEmpty(lastUri))
+                uri = Uri.parse(lastUri);
         }
 
         if (uri != null) {
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    Uri handleSendText(Intent intent) {
+    private Uri handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
             Uri uri = Uri.parse(sharedText);
@@ -88,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    Uri handleSendVideo(Intent intent) {
+    private Uri handleSendVideo(Intent intent) {
         Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (uri != null) {
             return openMXPlayer(uri);
@@ -96,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    Uri handleSendMultipleVideos(Intent intent) {
+    private Uri handleSendMultipleVideos(Intent intent) {
         ArrayList<Uri> uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         if (uris != null && !uris.isEmpty()) {
             return openMXPlayer(uris.get(0));
@@ -106,9 +111,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Uri openMXPlayer(Uri uri) {
         confirmBeforeExit = true;
+
+        saveSetting("last_uri", uri.toString());
+
         Intent i = new Intent(Intent.ACTION_VIEW);
-        Uri videoUri = uri;
-        i.setDataAndType(videoUri, "video/*");
+        i.setDataAndType(uri, "video/*");
         i.setPackage("com.mxtech.videoplayer.pro");
         if (isIntentValid(this, i)) {
             startActivityForResult(i, OPEN_PLAYER_REQUEST);
@@ -159,5 +166,23 @@ public class MainActivity extends AppCompatActivity {
                     .show();
         }
         back_pressed = System.currentTimeMillis();
+    }
+
+    private String getSetting(String name, String default_value) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return settings.getString(name, default_value);
+    }
+
+    /**
+     * Save setting.
+     *
+     * @param name  the name
+     * @param value the value
+     */
+    private void saveSetting(String name, String value) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(name, value);
+        editor.apply();
     }
 }

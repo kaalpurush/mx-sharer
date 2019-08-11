@@ -48,10 +48,15 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Invalid url!", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
-//    @Override
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    //    @Override
 //    protected void onNewIntent(Intent intent) {
 //        super.onNewIntent(intent);
 //        handleIntent(intent);
@@ -72,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 uri = handleSendMultipleVideos(intent); // Handle multiple images being sent
             }
         } else {
-            String lastUri = getSetting("last_url", "");
+            String lastUri = getSetting("last_uri", "");
             if (!TextUtils.isEmpty(lastUri))
                 uri = Uri.parse(lastUri);
         }

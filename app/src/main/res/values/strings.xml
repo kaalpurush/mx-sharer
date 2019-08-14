@@ -5,4 +5,6 @@
     <string name="playback_closed">Later then?</string>
     <string name="playback_calcelled">Playback was cancelled!</string>
     <string name="playback_error">Playback resulted in error!</string>
+    <string name="playback_duration">Playback duration %d sec</string>
+    <string name="open_in_mx_player">Open in MX Player</string>
 </resources>

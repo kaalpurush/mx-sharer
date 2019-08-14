@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setDataAndType(uri, "video/*");
         i.setPackage("com.mxtech.videoplayer.pro");
+        i.putExtra("return_result", true);
         if (isIntentValid(this, i)) {
             startActivityForResult(i, OPEN_PLAYER_REQUEST);
         } else {
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == OPEN_PLAYER_REQUEST) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
-                    if (data.hasExtra("end_by") && data.getStringExtra("end_by").equals("playback_completion"))
+                    if (data != null && data.hasExtra("end_by") && data.getStringExtra("end_by").equals("playback_completion"))
                         Toast.makeText(this, R.string.playback_end, Toast.LENGTH_SHORT).show();
                     else
                         Toast.makeText(this, R.string.playback_closed, Toast.LENGTH_SHORT).show();
@@ -158,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.playback_error, Toast.LENGTH_SHORT).show();
                     break;
             }
+
+            if (data != null && data.hasExtra("duration"))
+                Toast.makeText(this, getString(R.string.playback_duration, data.getIntExtra("duration", 0) / 1000000), Toast.LENGTH_SHORT).show();
         }
     }
 

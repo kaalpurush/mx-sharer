@@ -3,19 +3,15 @@ package com.codelixir.mxsharer
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
-import android.view.View
 import android.webkit.URLUtil
 import android.widget.TextView
 import android.widget.Toast
-
-import java.util.ArrayList
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,11 +28,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Get intent, action and MIME type
-        val intent = intent
         handleIntent(intent)
 
-        findViewById<View>(R.id.btnLink).setOnClickListener {
-            val uriString = (findViewById<View>(R.id.tvLink) as TextView).text.toString()
+        btnLink.setOnClickListener {
+            val uriString = (tvLink as TextView).text.toString()
             if (URLUtil.isValidUrl(uriString)) {
                 val uri = Uri.parse(uriString)
                 if (uri != null)
@@ -77,9 +72,8 @@ class MainActivity : AppCompatActivity() {
                 uri = Uri.parse(lastUri)
         }
 
-        if (uri != null) {
-            (findViewById<View>(R.id.tvLink) as TextView).text = uri!!.toString()
-        }
+        (tvLink as TextView).text = uri?.toString()
+
     }
 
     private fun handleSendText(intent: Intent): Uri? {

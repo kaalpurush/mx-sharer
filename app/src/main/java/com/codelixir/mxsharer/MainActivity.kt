@@ -6,38 +6,43 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.webkit.URLUtil
-import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
+
+import com.codelixir.mxsharer.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    internal var uri: Uri? = null
+    private lateinit var binding: ActivityMainBinding
+
+    private var uri: Uri? = null
 
     private val OPEN_PLAYER_REQUEST = 786
 
-    internal var back_pressed: Long = 0
+    private var back_pressed: Long = 0
 
-    internal var confirmBeforeExit = true
+    private var confirmBeforeExit = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
 
         // Get intent, action and MIME type
         handleIntent(intent)
 
-        btnLink.setOnClickListener {
-            val uriString = (tvLink as TextView).text.toString()
+        binding.btnLink.setOnClickListener {
+            val uriString = binding.tvLink.text.toString()
             if (URLUtil.isValidUrl(uriString)) {
                 val uri = Uri.parse(uriString)
                 if (uri != null)
                     openMXPlayer(uri)
             } else
-                Toast.makeText(this@MainActivity, "Invalid url!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Invalid url!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -72,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 uri = Uri.parse(lastUri)
         }
 
-        (tvLink as TextView).text = uri?.toString()
+        binding.tvLink.text = uri?.toString()
 
     }
 
